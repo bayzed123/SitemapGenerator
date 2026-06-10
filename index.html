@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SaaS SEO Crawler</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>🚀 SEO SaaS Crawler</h1>
+
+  <input id="url" placeholder="Enter website URL" />
+  <button onclick="startCrawl()">Start Crawl</button>
+
+  <p id="status">Idle</p>
+
+  <h2>📡 Live Progress</h2>
+
+  <progress id="bar" value="0" max="100"></progress>
+
+  <div id="current"></div>
+
+  <h2>📊 Results</h2>
+
+  <button onclick="downloadLinks()">Download Links</button>
+  <button onclick="downloadSitemap()">Download Sitemap</button>
+
+  <pre id="links"></pre>
+
+</div>
+
+<script src="app.js"></script>
+<script src="dashboard.js"></script>
+
+</body>
+</html>
