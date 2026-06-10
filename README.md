@@ -1,4 +1,4 @@
-# sitemap-autogenerator
+# sitemap-generator
 
 An Ember AddOn for ember-cli that auto-generates a sitemap.xml file and adds it to the project.
 
