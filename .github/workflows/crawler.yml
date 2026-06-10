@@ -1,0 +1,39 @@
+name: SEO SaaS Crawler
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_url:
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install puppeteer
+
+      - name: Prepare output
+        run: mkdir -p output
+
+      - name: Run crawler
+        run: node backend/crawler.js "${{ github.event.inputs.target_url }}"
+
+      - name: Generate sitemap
+        run: node backend/sitemap.js
+
+      - name: Copy to docs (GitHub Pages)
+        run: |
+          rm -rf docs
+          mkdir docs
+          cp -r output/* docs/
