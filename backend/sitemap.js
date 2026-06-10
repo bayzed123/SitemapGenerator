@@ -1,36 +1,24 @@
 const fs = require("fs");
 
-function generateSitemap(urls) {
-    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
-    xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+function generate() {
+  const links = JSON.parse(fs.readFileSync("output/links.json"));
 
-    urls.forEach(u => {
-        xml += `
+  let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
+
+  links.forEach(url => {
+    xml += `
   <url>
-    <loc>${u.url}</loc>
-    <priority>${u.depth === 0 ? "1.0" : "0.7"}</priority>
+    <loc>${url}</loc>
   </url>`;
-    });
+  });
 
-    xml += `\n</urlset>`;
+  xml += `\n</urlset>`;
 
-    fs.writeFileSync("../output/sitemap.xml", xml);
+  fs.writeFileSync("output/sitemap.xml", xml);
 }
 
-function generateIndex(files) {
-    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
-    xml += `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+module.exports = { generate };
 
-    files.forEach(f => {
-        xml += `
-  <sitemap>
-    <loc>${f}</loc>
-  </sitemap>`;
-    });
-
-    xml += `\n</sitemapindex>`;
-
-    fs.writeFileSync("../output/sitemap-index.xml", xml);
+if (require.main === module) {
+  generate();
 }
-
-module.exports = { generateSitemap, generateIndex };
