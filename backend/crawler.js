@@ -1,79 +1,57 @@
-const axios = require("axios");
-const cheerio = require("cheerio");
-const Queue = require("./queue");
-const { isAllowedByRobots } = require("./robots");
+const puppeteer = require("puppeteer");
+const fs = require("fs");
+const progress = require("./progress");
 
-let visited = new Set();
+async function crawl(startUrl, maxPages = 500) {
 
-// Blog detection
-function isBlog(url) {
-    return (
-        url.includes("/blog") ||
-        url.includes("/news") ||
-        url.includes("/article") ||
-        url.includes("/post") ||
-        url.includes("/category")
-    );
-}
+  const browser = await puppeteer.launch({
+    args: ["--no-sandbox"]
+  });
 
-// normalize URL
-function normalize(base, href) {
+  const page = await browser.newPage();
+
+  let queue = [startUrl];
+  let visited = new Set();
+  let results = [];
+
+  progress.init(maxPages);
+
+  while (queue.length && visited.size < maxPages) {
+    const url = queue.shift();
+    if (!url || visited.has(url)) continue;
+
+    visited.add(url);
+    progress.update(url);
+
     try {
-        return new URL(href, base).href;
-    } catch {
-        return null;
+      await page.goto(url, { waitUntil: "networkidle2" });
+
+      const links = await page.evaluate(() =>
+        Array.from(document.querySelectorAll("a"))
+          .map(a => a.href)
+      );
+
+      results.push(url);
+
+      for (let l of links) {
+        if (l && !visited.has(l)) queue.push(l);
+      }
+
+    } catch (e) {
+      results.push(url);
     }
+  }
+
+  await browser.close();
+
+  progress.finish();
+
+  fs.writeFileSync("output/links.json", JSON.stringify(results, null, 2));
 }
 
-async function crawlWebsite(startUrl, maxDepth = 4) {
-    visited = new Set();
-    const queue = new Queue();
-    const results = [];
+module.exports = { crawl };
 
-    queue.enqueue({ url: startUrl, depth: 0 });
-
-    while (!queue.isEmpty()) {
-        const { url, depth } = queue.dequeue();
-
-        if (visited.has(url)) continue;
-        if (depth > maxDepth) continue;
-
-        visited.add(url);
-
-        if (!(await isAllowedByRobots(url))) continue;
-
-        try {
-            const res = await axios.get(url);
-            const $ = cheerio.load(res.data);
-
-            results.push({ url, depth });
-
-            $("a").each((_, el) => {
-                let href = $(el).attr("href");
-                if (!href) return;
-
-                const full = normalize(url, href);
-                if (!full) return;
-
-                if (!full.startsWith(new URL(startUrl).origin)) return;
-
-                if (visited.has(full)) return;
-
-                // BLOG PRIORITY BOOST
-                const nextDepth = isBlog(full) ? depth + 1 : depth + 2;
-
-                queue.enqueue({
-                    url: full,
-                    depth: nextDepth
-                });
-            });
-
-        } catch (err) {
-            // ignore broken pages
-        }
-    }
-
-    return results;
+if (require.main === module) {
+  const url = process.argv[2];
+  crawl(url);
 }
-
-module.exports = { crawlWebsite };
