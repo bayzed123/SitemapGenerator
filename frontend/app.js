@@ -1,29 +1,25 @@
-let data = [];
+function startCrawl() {
+  const url = document.getElementById("url").value;
 
-async function crawl() {
-    const url = document.getElementById("url").value;
-    const depth = document.getElementById("depth").value;
+  document.getElementById("status").innerText = "Crawling started...";
 
-    const res = await fetch("/crawl", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url, depth })
-    });
-
-    const json = await res.json();
-    data = json.data;
-
-    document.getElementById("result").innerHTML =
-        data.map(d => `<p>${d.url}</p>`).join("");
+  fetch("https://api.github.com/repos/bayzed123/SitemapGenerator/actions/workflows/crawler.yml/dispatches", {
+    method: "POST",
+    headers: {
+      "Accept": "application/vnd.github+json",
+      "Authorization": "Bearer YOUR_TOKEN"
+    },
+    body: JSON.stringify({
+      ref: "main",
+      inputs: { target_url: url }
+    })
+  });
 }
 
-function download() {
-    const blob = new Blob([JSON.stringify(data, null, 2)], {
-        type: "application/json"
-    });
+function downloadLinks() {
+  window.open("../output/links.json");
+}
 
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "crawl.json";
-    a.click();
+function downloadSitemap() {
+  window.open("../output/sitemap.xml");
 }
