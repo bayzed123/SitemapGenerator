@@ -1,154 +1,75 @@
-# sitemap-autogenerator
+# Auto Sitemap Generator
 
-An Ember AddOn for ember-cli that auto-generates a sitemap.xml file and adds it to the project.
+An automated backend service and crawler designed to systematically map web properties, respect `robots.txt` directives, and generate valid, SEO-compliant XML sitemaps using a Breadth-First Search (BFS) engine.
 
-Compatibility
+🟢 **Live Demo:** [Sitemap Generator](https://bayzed123.github.io/SitemapGenerator/)
 
-Ember.js v3.16 or above  
-Ember CLI v2.13 or above  
-Node.js v10 or above  
+---
 
-Installation
+## Features
 
-To install simply run:
+* **BFS Crawler:** Traverses domains level-by-level to prioritize high-value pages.
+* **`robots.txt` Compliance:** Automatically fetches and respects exclusion rules before crawling.
+* **XML Generation:** Builds clean, standard-compliant `sitemap.xml` files ready for search engines.
+* **In-Memory Tracking:** Efficient URL queue and visited-state management to prevent infinite loops.
 
-npm install --save-dev sitemap-autogenerator
+---
 
-Usage
+## Installation Guidelines (For Developers)
 
-Add the following code to package.json:
+To run this project locally or modify the backend crawler logic, follow these steps:
 
-"postbuild": "node -e \"require('./node_modules/sitemap-autogenerator/blueprints/sitemap-autogenerator/index').triggerSitemapBuilder('<YOUR SITE ROOT URL>')\"",
+### Prerequisites
+* [Node.js](https://nodejs.org/) (v14 or higher recommended)
+* Git
 
-Be sure to not have a trailing / after <YOUR SITE ROOT URL> or else you will get double // in your generated sitemap.xml
+### Setup
 
-The Sitemap protocol consists of XML tags and must have the following tags:
+**1. Clone the repository**
+```bash
+git clone [https://github.com/bayzed123/SitemapGenerator.git](https://github.com/bayzed123/SitemapGenerator.git)
+cd SitemapGenerator
+```
 
-<urlset> Encapsulates the file and references the current protocol standard.  
-<url> Parent tag for each URL entry. The remaining tags are children of this tag.  
-<loc> URL of the page. This URL must begin with the protocol (such as http) and end with a trailing slash, if your web server requires it. This value must be less than 2,048 characters.  
+**2. Install dependencies**
+```bash
+npm install
+```
 
-The following tags are optional:
+**3. Run the application**
+```bash
+# Execute the main crawler process
+node backend/crawler.js
+```
 
-<lastmod> The date of last modification of the file.  
-<changefreq> How frequently the page is likely to change. This value provides general information to search engines and may not correlate exactly to how often they crawl the page. Valid values are:  
-always The value "always" should be used to describe documents that change each time they are accessed.  
-hourly  
-daily  
-weekly  
-monthly  
-yearly  
-never  
+*(Note: Ensure you configure the target seed URL inside the crawler configuration before running).*
 
-<priority> The priority of this URL relative to other URLs on your site. Valid values range from 0.0 to 1.0. This value does not affect how your pages are compared to pages on other sites—it only lets the search engines know which pages you deem most important for the crawlers. The default priority of a page is 0.5.
+---
 
-environment.js
+## Project Structure
 
-Below is an example of how to customize items such as Custom values for changeFrequency and defaultPriorityValue, as well as routes to ignoreTheseRoutes and customPriority values are optional.
+```text
+backend/
+│
+├── crawler.js         # Core BFS engine and HTML parser
+├── sitemap.js         # XML compilation and formatting
+├── robots.js          # robots.txt fetcher and validator
+└── utils.js           # Shared utilities and helpers
+```
+For a detailed breakdown of the architecture and scaling constraints, please check the [Project Wiki](https://github.com/bayzed123/SitemapGenerator/wiki).
 
-changeFrequency is an optional key/value pair, where the possible options are a string:
+---
 
-always  
-hourly  
-daily  
-weekly  
-monthly  
-yearly  
-never  
+## Developer / Author
 
-If changeFrequency is not specified in your environment.js file, the default value will be daily.
+Developed and maintained by **[Sayad Md Bayezid Hosan](http://www.sayadbayezid.com)**. 
 
-showLog is an optional key/value pair, where the possible options are true or false. If showLog is not specified in your environment.js file, the default value will be false. If set to true, showLog displays log information regarding which routes/paths are added or ignored in your sitemap-autogenerator generated sitemap.xml file.
+---
 
-defaultPriorityValue is an optional key/value pair, where the possible options are a string from 0.0 to 1.0. If defaultPriorityValue is not specified in your environment.js file, the default value will be 0.5.
+## Support This Project
 
-ignoreTheseRoutes is an optional object where each key/value pair is the name of a route you would like to be omitted from your sitemap.xml and the value must be true. To avoid confusion, this may be the route from your Ember app or the path by which you reach this route. If your complete URL is https://mysite.com/contact and you would like to omit contact from your sitemap.xml, you would include the following in ignoreTheseRoutes: { 'contact': true }. If ignoreTheseRoutes is omitted, then all routes except for those with the path "*" will be added to your sitemap.xml.
+If you found this tool helpful for your SEO or development workflow, consider supporting its continued development!
 
-customPriority is an optional object where each key/value pair where the key is the name of a route and the value is a string specifying a particular priority for this route, from 0.0 to 1.0. If customPriority is omitted, then all routes will be assigned a priority of 0.5 by default.
+[![Support](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfFv_YMJyR_L8Ni71R2mQiNNrAGY6kn4ZCK40OPdMwztq4Ub0ea-OMdLg&s)](https://buymeacoffee.com/bayezid)
 
-pathsOutsideEmberApp is an optional array of external URLs to be included in the generated sitemap.xml.
-
-Please add these to your environment.js file as shown in the example below
-
-<!-- environment.js -->
-...
-  
-ENV['sitemap-autogenerator'] = {
-changeFrequency: 'weekly', // Optional (if not included in ENV, default value is 'daily')
-defaultPriorityValue: '0.3', // Optional (if not included in ENV, default value is '0.5')
-showLog: true,
-ignoreTheseRoutes: { // Optional (if not included in ENV, all routes will be included in sitemap.xml except those with path "*"
-  'contact-us': true,
-  'contact': true,
-  'algorithmictradedeveloper': true,
-  'careers': true
-},
-customPriority: { // Optional (if not included in ENV, all values will be the default value '0.5')
-  'fpgaengineer': '0.2',
-  'systemapplicationdeveloper': '0.9',
-  'general': '0.7',
-  'coresoftwaredeveloper': '0.8'
-},
-pathsOutsideEmberApp: [ // Optional (pathsOutsideEmberApp may be omitted)
-  'blog',
-  'some/other/path.html'
-]
-
-...
-
-}
-
-sitemap-autogenerator will run at the end of each Ember build, which are run with: npm run build
-
-Alternatively, you can place the above script as a "poststart" hook in your package.json file and test that a sitemap.xml file is created when you stop ember s.
-
-You should see the following log message right after the ember-cli logs cleaning up...
-
-A new version of sitemap.xml was successfully saved
-
-Current Limitations
-
-Routes with dynamic segments, ie "/artist/:artist_id", are not yet supported.  
-The sitemap-autogenerator is limited to basic XML sitemaps and cannot currently manage image and video file information for resources on a page or rich media content.  
-sitemap-autogenerator assumes you use the following standard Ember file structure: myproject/dist/sitemap.xml  
-
-Example of Output
-
-<!-- myproject/dist/sitemap.xml -->
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://www.<mysite>.com/</loc>
-    <lastmod>2019-10-15</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://www.<mysite>.com/blog</loc><!-- an example of a pathsOutsideEmberApp item being injected -->
-    <lastmod>2019-10-15</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.3</priority>
-  </url>
-</urlset>
-
-Running tests
-
-git clone git@github.com:wackerservices/SitemapAutogenerator.git this repository  
-npm test (Runs ember try:each to test your addon against multiple Ember versions)  
-ember test – Runs the test suite on the current Ember version  
-ember test --server – Runs the test suite in "watch mode"  
-ember try:each – Runs the test suite against multiple Ember versions  
-
-Running the dummy application
-
-ember serve  
-Visit the dummy application at http://localhost:4200. Usage  
-[Longer description of how to use the addon in apps.]
-
-Contributing
-
-See the Contributing guide for details.
-
-License
-
-This project is licensed under the MIT License.
+[Buy me a coffee](https://buymeacoffee.com/bayezid)
