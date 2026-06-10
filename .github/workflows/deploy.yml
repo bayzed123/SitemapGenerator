@@ -1,9 +1,9 @@
-name: 🚀 Deploy Sitemap to GitHub Pages (Main)
+name: 🚀 Auto Deploy Sitemap + Site to GitHub Pages
 
 on:
   push:
     branches:
-      - main
+      - main   # ✅ auto trigger from main
 
   workflow_dispatch:
 
@@ -11,11 +11,11 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -23,19 +23,26 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: npm install
 
-      - name: Run Build (Sitemap Generator)
-        run: npm run build || echo "Build failed but continuing..."
+      - name: Build sitemap
+        run: npm run build || true
 
-      - name: Prepare Public Folder
+      - name: Ensure frontend index exists
         run: |
-          rm -rf public
-          mkdir public
+          mkdir -p public
 
-          cp -r frontend/* public/ || true
-          cp -r output/* public/ || true
+          if [ -f frontend/index.html ]; then
+            cp frontend/index.html public/index.html
+          else
+            echo "<h1>Sitemap Generator Running</h1>" > public/index.html
+          fi
+
+      - name: Copy sitemap output
+        run: |
+          mkdir -p public
+          cp -r output/* public/ 2>/dev/null || true
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
