@@ -1,369 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sitemap-autogenerator | Automatic Sitemap Generator for Ember CLI</title>
+<meta charset="UTF-8">
+<title>Auto Sitemap Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description" content="An Ember AddOn for ember-cli that automatically generates sitemap.xml files during build time.">
-    <meta name="keywords" content="ember, ember-cli, sitemap, sitemap.xml, seo, addon, sitemap generator">
-    <meta name="author" content="Bayezid">
-    <meta name="robots" content="index,follow">
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background:#0f172a;
+    color:#e2e8f0;
+}
 
-    <meta property="og:title" content="sitemap-autogenerator">
-    <meta property="og:description" content="Automatic sitemap.xml generation for Ember CLI applications.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://github.com/bayzed123/SitemapGenerator">
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:30px;
+}
 
-    <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-        }
+h1{
+    text-align:center;
+    margin-bottom:10px;
+}
 
-        body{
-            font-family:Inter,Segoe UI,Arial,sans-serif;
-            background:#0f172a;
-            color:#e2e8f0;
-            line-height:1.7;
-        }
+.card{
+    background:#111827;
+    padding:20px;
+    border-radius:12px;
+    margin-top:20px;
+    border:1px solid #1f2937;
+}
 
-        a{
-            color:#60a5fa;
-            text-decoration:none;
-        }
+input{
+    width:75%;
+    padding:12px;
+    border-radius:8px;
+    border:none;
+}
 
-        .container{
-            width:min(1200px,92%);
-            margin:auto;
-        }
+button{
+    padding:12px 15px;
+    margin:5px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
 
-        header{
-            padding:80px 0;
-            text-align:center;
-            border-bottom:1px solid rgba(255,255,255,.1);
-        }
+.primary{background:#2563eb;color:white;}
+.success{background:#16a34a;color:white;}
+.dark{background:#334155;color:white;}
 
-        h1{
-            font-size:3.5rem;
-            margin-bottom:20px;
-        }
+ul{
+    list-style:none;
+    padding:0;
+}
 
-        .subtitle{
-            max-width:800px;
-            margin:auto;
-            color:#94a3b8;
-            font-size:1.2rem;
-        }
+li{
+    padding:8px;
+    border-bottom:1px solid #1f2937;
+    font-size:14px;
+}
 
-        .buttons{
-            margin-top:30px;
-            display:flex;
-            justify-content:center;
-            gap:15px;
-            flex-wrap:wrap;
-        }
+.footer{
+    text-align:center;
+    margin-top:40px;
+    padding:20px;
+    border-top:1px solid #1f2937;
+}
 
-        .btn{
-            padding:12px 24px;
-            border-radius:8px;
-            background:#2563eb;
-            color:white;
-            display:inline-block;
-        }
-
-        .btn.secondary{
-            background:#1e293b;
-            border:1px solid rgba(255,255,255,.15);
-        }
-
-        section{
-            padding:70px 0;
-        }
-
-        h2{
-            margin-bottom:25px;
-            font-size:2rem;
-        }
-
-        p{
-            color:#cbd5e1;
-        }
-
-        .card{
-            background:#111827;
-            border:1px solid rgba(255,255,255,.08);
-            border-radius:14px;
-            padding:24px;
-            margin-top:20px;
-        }
-
-        .grid{
-            display:grid;
-            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-            gap:20px;
-        }
-
-        ul{
-            padding-left:20px;
-        }
-
-        li{
-            margin-bottom:8px;
-        }
-
-        pre{
-            background:#020617;
-            padding:20px;
-            border-radius:10px;
-            overflow:auto;
-            margin-top:15px;
-        }
-
-        code{
-            font-family:Consolas,monospace;
-        }
-
-        table{
-            width:100%;
-            border-collapse:collapse;
-            margin-top:20px;
-        }
-
-        th,td{
-            border:1px solid rgba(255,255,255,.08);
-            padding:12px;
-            text-align:left;
-        }
-
-        th{
-            background:#111827;
-        }
-
-        footer{
-            text-align:center;
-            padding:60px 0;
-            border-top:1px solid rgba(255,255,255,.08);
-            color:#94a3b8;
-        }
-    </style>
+a{color:#60a5fa;}
+</style>
 </head>
+
 <body>
 
-<header>
-    <div class="container">
-        <h1>sitemap-autogenerator</h1>
+<div class="container">
 
-        <p class="subtitle">
-            An Ember AddOn for ember-cli that automatically generates a sitemap.xml file
-            and adds it to your project during build time.
-        </p>
-
-        <div class="buttons">
-            <a class="btn" href="https://github.com/bayzed123/SitemapGenerator" target="_blank">
-                GitHub Repository
-            </a>
-
-            <a class="btn secondary" href="#installation">
-                Get Started
-            </a>
-        </div>
-    </div>
-</header>
-
-<section>
-    <div class="container">
-
-        <h2>Compatibility</h2>
-
-        <table>
-            <tr>
-                <th>Dependency</th>
-                <th>Version</th>
-            </tr>
-            <tr>
-                <td>Ember.js</td>
-                <td>v3.16+</td>
-            </tr>
-            <tr>
-                <td>Ember CLI</td>
-                <td>v2.13+</td>
-            </tr>
-            <tr>
-                <td>Node.js</td>
-                <td>v10+</td>
-            </tr>
-        </table>
-
-    </div>
-</section>
-
-<section id="installation">
-    <div class="container">
-
-        <h2>Installation</h2>
-
-        <div class="card">
-<pre><code>npm install --save-dev sitemap-autogenerator</code></pre>
-        </div>
-
-    </div>
-</section>
-
-<section>
-    <div class="container">
-
-        <h2>Usage</h2>
-
-        <div class="card">
-<pre><code>"postbuild": "node -e \"require('./node_modules/sitemap-autogenerator/blueprints/sitemap-autogenerator/index').triggerSitemapBuilder('&lt;YOUR SITE ROOT URL&gt;')\""</code></pre>
-
-            <p style="margin-top:15px;">
-                Do not include a trailing slash after your root URL or the generated sitemap
-                may contain double slashes.
-            </p>
-        </div>
-
-    </div>
-</section>
-
-<section>
-    <div class="container">
-
-        <h2>Features</h2>
-
-        <div class="grid">
-
-            <div class="card">
-                <h3>Automatic Generation</h3>
-                <p>Generate sitemap.xml automatically after every build.</p>
-            </div>
-
-            <div class="card">
-                <h3>Nested Routes</h3>
-                <p>Supports nested Ember route structures.</p>
-            </div>
-
-            <div class="card">
-                <h3>Custom Priorities</h3>
-                <p>Assign route specific priority values.</p>
-            </div>
-
-            <div class="card">
-                <h3>Ignore Routes</h3>
-                <p>Exclude routes from sitemap generation.</p>
-            </div>
-
-            <div class="card">
-                <h3>External Paths</h3>
-                <p>Include URLs outside the Ember router.</p>
-            </div>
-
-            <div class="card">
-                <h3>Build Integration</h3>
-                <p>Works directly with Ember build lifecycle hooks.</p>
-            </div>
-
-        </div>
-
-    </div>
-</section>
-
-<section>
-    <div class="container">
-
-        <h2>Configuration Example</h2>
+<h1>⚡ Auto Sitemap Generator Dashboard</h1>
 
 <div class="card">
-<pre><code>ENV['sitemap-autogenerator'] = {
-  changeFrequency: 'weekly',
-  defaultPriorityValue: '0.3',
-  showLog: true,
 
-  ignoreTheseRoutes: {
-    'contact-us': true,
-    'contact': true,
-    'careers': true
-  },
+    <input id="urlInput" placeholder="Enter website URL (https://example.com)" />
+    <button class="primary" onclick="addSite()">Scan Website</button>
 
-  customPriority: {
-    'general': '0.7',
-    'systemapplicationdeveloper': '0.9'
-  },
+    <button class="dark" onclick="downloadLinks()">Download Links</button>
+    <button class="success" onclick="downloadXML()">Download Sitemap XML</button>
 
-  pathsOutsideEmberApp: [
-    'blog',
-    'some/other/path.html'
-  ]
-};</code></pre>
 </div>
-
-    </div>
-</section>
-
-<section>
-    <div class="container">
-
-        <h2>Generated Sitemap Example</h2>
 
 <div class="card">
-<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"&gt;
-
-  &lt;url&gt;
-    &lt;loc&gt;https://www.example.com/&lt;/loc&gt;
-    &lt;lastmod&gt;2025-01-01&lt;/lastmod&gt;
-    &lt;changefreq&gt;daily&lt;/changefreq&gt;
-    &lt;priority&gt;0.9&lt;/priority&gt;
-  &lt;/url&gt;
-
-&lt;/urlset&gt;</code></pre>
+    <h3>📡 Extracted Links</h3>
+    <ul id="linkList"></ul>
 </div>
 
-    </div>
-</section>
+<div class="card">
+    <h3>🧾 Sitemap Preview</h3>
+    <pre id="xmlPreview" style="white-space:pre-wrap;"></pre>
+</div>
 
-<section>
-    <div class="container">
+</div>
 
-        <h2>Current Limitations</h2>
+<div class="footer">
+    <p>
+        Developer:
+        <a href="https://www.sayadbayezid.com" target="_blank">
+            Sayad Md Bayezid Hosan
+        </a>
+    </p>
 
-        <div class="card">
-            <ul>
-                <li>Dynamic routes such as /artist/:artist_id are not supported.</li>
-                <li>Image sitemaps are not supported.</li>
-                <li>Video sitemaps are not supported.</li>
-                <li>Rich media sitemap extensions are not supported.</li>
-            </ul>
-        </div>
+    <p>
+        Contributed with AI support: 
+        <a href="https://openai.com" target="_blank">OpenAI ChatGPT</a>
+    </p>
+</div>
 
-    </div>
-</section>
+<script>
 
-<section>
-    <div class="container">
+let links = [];
 
-        <h2>Repository</h2>
+function addSite(){
+    const url = document.getElementById("urlInput").value;
+    if(!url) return alert("Enter URL");
 
-        <div class="card">
-            <p>
-                GitHub:
-                <a href="https://github.com/bayzed123/SitemapGenerator" target="_blank">
-                    https://github.com/bayzed123/SitemapGenerator
-                </a>
-            </p>
-        </div>
+    // Simulated link generation (frontend only)
+    links = [
+        url + "/",
+        url + "/about",
+        url + "/contact",
+        url + "/blog",
+        url + "/services"
+    ];
 
-    </div>
-</section>
+    renderLinks();
+    generateXML();
+}
 
-<footer>
-    <div class="container">
-        <p>sitemap-autogenerator • MIT License</p>
-        <p>Repository maintained by Bayezid</p>
-    </div>
-</footer>
+function renderLinks(){
+    const list = document.getElementById("linkList");
+    list.innerHTML = "";
+
+    links.forEach(l=>{
+        let li = document.createElement("li");
+        li.innerText = l;
+        list.appendChild(li);
+    });
+}
+
+function generateXML(){
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+
+    links.forEach(l=>{
+        xml += `
+  <url>
+    <loc>${l}</loc>
+  </url>`;
+    });
+
+    xml += "\n</urlset>";
+
+    document.getElementById("xmlPreview").innerText = xml;
+}
+
+function downloadLinks(){
+    const blob = new Blob([links.join("\n")], {type:"text/plain"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "links.txt";
+    a.click();
+}
+
+function downloadXML(){
+    const xml = document.getElementById("xmlPreview").innerText;
+    const blob = new Blob([xml], {type:"application/xml"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "sitemap.xml";
+    a.click();
+}
+
+</script>
 
 </body>
 </html>
