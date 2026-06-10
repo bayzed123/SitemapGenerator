@@ -5,14 +5,23 @@
   "keywords": [
     "ember-addon",
     "router.js-parser",
-    "sitemap.xml-generator"
+    "sitemap.xml-generator",
+    "sitemap",
+    "ember-cli",
+    "seo",
+    "xml",
+    "generator"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bayzed123/SitemapGenerator"
+    "url": "git+https://github.com/bayzed123/SitemapGenerator.git"
+  },
+  "homepage": "https://github.com/bayzed123/SitemapGenerator",
+  "bugs": {
+    "url": "https://github.com/bayzed123/SitemapGenerator/issues"
   },
   "license": "MIT",
-  "author": "Ross Updegraff <npm.rupdegraff@chicagoventure.com",
+  "author": "Ross Updegraff <npm.rupdegraff@chicagoventure.com>",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -67,7 +76,7 @@
     "qunit-dom": "^1.6.0"
   },
   "engines": {
-    "node": "10.* || >= 12"
+    "node": "10.* || >=12"
   },
   "ember": {
     "edition": "octane"
