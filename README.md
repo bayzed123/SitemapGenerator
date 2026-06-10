@@ -1,26 +1,20 @@
-# sitemap-generator
+# sitemap-autogenerator
 
 An Ember AddOn for ember-cli that auto-generates a sitemap.xml file and adds it to the project.
 
----
-
-## Compatibility
+Compatibility
 
 Ember.js v3.16 or above  
 Ember CLI v2.13 or above  
 Node.js v10 or above  
 
----
-
-## Installation
+Installation
 
 To install simply run:
 
 npm install --save-dev sitemap-autogenerator
 
----
-
-## Usage
+Usage
 
 Add the following code to package.json:
 
@@ -28,21 +22,16 @@ Add the following code to package.json:
 
 Be sure to not have a trailing / after <YOUR SITE ROOT URL> or else you will get double // in your generated sitemap.xml
 
----
-
-## The Sitemap protocol consists of XML tags and must have the following tags:
+The Sitemap protocol consists of XML tags and must have the following tags:
 
 <urlset> Encapsulates the file and references the current protocol standard.  
 <url> Parent tag for each URL entry. The remaining tags are children of this tag.  
 <loc> URL of the page. This URL must begin with the protocol (such as http) and end with a trailing slash, if your web server requires it. This value must be less than 2,048 characters.  
 
----
-
-## The following tags are optional:
+The following tags are optional:
 
 <lastmod> The date of last modification of the file.  
-<changefreq> How frequently the page is likely to change. This value provides general information to search engines and may not correlate exactly to how often they crawl the page. Valid values are:
-
+<changefreq> How frequently the page is likely to change. This value provides general information to search engines and may not correlate exactly to how often they crawl the page. Valid values are:  
 always The value "always" should be used to describe documents that change each time they are accessed.  
 hourly  
 daily  
@@ -53,9 +42,7 @@ never
 
 <priority> The priority of this URL relative to other URLs on your site. Valid values range from 0.0 to 1.0. This value does not affect how your pages are compared to pages on other sites—it only lets the search engines know which pages you deem most important for the crawlers. The default priority of a page is 0.5.
 
----
-
-## environment.js
+environment.js
 
 Below is an example of how to customize items such as Custom values for changeFrequency and defaultPriorityValue, as well as routes to ignoreTheseRoutes and customPriority values are optional.
 
@@ -81,36 +68,35 @@ customPriority is an optional object where each key/value pair where the key is 
 
 pathsOutsideEmberApp is an optional array of external URLs to be included in the generated sitemap.xml.
 
----
-
-## Example environment.js
+Please add these to your environment.js file as shown in the example below
 
 <!-- environment.js -->
 ...
   
 ENV['sitemap-autogenerator'] = {
-  changeFrequency: 'weekly', // Optional (if not included in ENV, default value is 'daily')
-  defaultPriorityValue: '0.3', // Optional (if not included in ENV, default value is '0.5')
-  showLog: true,
-  ignoreTheseRoutes: {
-    'contact-us': true,
-    'contact': true,
-    'algorithmictradedeveloper': true,
-    'careers': true
-  },
-  customPriority: {
-    'fpgaengineer': '0.2',
-    'systemapplicationdeveloper': '0.9',
-    'general': '0.7',
-    'coresoftwaredeveloper': '0.8'
-  },
-  pathsOutsideEmberApp: [
-    'blog',
-    'some/other/path.html'
-  ]
-}
+changeFrequency: 'weekly', // Optional (if not included in ENV, default value is 'daily')
+defaultPriorityValue: '0.3', // Optional (if not included in ENV, default value is '0.5')
+showLog: true,
+ignoreTheseRoutes: { // Optional (if not included in ENV, all routes will be included in sitemap.xml except those with path "*"
+  'contact-us': true,
+  'contact': true,
+  'algorithmictradedeveloper': true,
+  'careers': true
+},
+customPriority: { // Optional (if not included in ENV, all values will be the default value '0.5')
+  'fpgaengineer': '0.2',
+  'systemapplicationdeveloper': '0.9',
+  'general': '0.7',
+  'coresoftwaredeveloper': '0.8'
+},
+pathsOutsideEmberApp: [ // Optional (pathsOutsideEmberApp may be omitted)
+  'blog',
+  'some/other/path.html'
+]
 
----
+...
+
+}
 
 sitemap-autogenerator will run at the end of each Ember build, which are run with: npm run build
 
@@ -120,17 +106,13 @@ You should see the following log message right after the ember-cli logs cleaning
 
 A new version of sitemap.xml was successfully saved
 
----
-
-## Current Limitations
+Current Limitations
 
 Routes with dynamic segments, ie "/artist/:artist_id", are not yet supported.  
 The sitemap-autogenerator is limited to basic XML sitemaps and cannot currently manage image and video file information for resources on a page or rich media content.  
 sitemap-autogenerator assumes you use the following standard Ember file structure: myproject/dist/sitemap.xml  
 
----
-
-## Example of Output
+Example of Output
 
 <!-- myproject/dist/sitemap.xml -->
 <?xml version="1.0" encoding="UTF-8"?>
@@ -149,9 +131,7 @@ sitemap-autogenerator assumes you use the following standard Ember file structur
   </url>
 </urlset>
 
----
-
-## Running tests
+Running tests
 
 git clone git@github.com:wackerservices/SitemapAutogenerator.git this repository  
 npm test (Runs ember try:each to test your addon against multiple Ember versions)  
@@ -159,23 +139,16 @@ ember test – Runs the test suite on the current Ember version
 ember test --server – Runs the test suite in "watch mode"  
 ember try:each – Runs the test suite against multiple Ember versions  
 
----
-
-## Running the dummy application
+Running the dummy application
 
 ember serve  
-
 Visit the dummy application at http://localhost:4200. Usage  
 [Longer description of how to use the addon in apps.]
 
----
-
-## Contributing
+Contributing
 
 See the Contributing guide for details.
 
----
-
-## License
+License
 
 This project is licensed under the MIT License.
