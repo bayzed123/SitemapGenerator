@@ -49,12 +49,29 @@ node backend/crawler.js
 ## Project Structure
 
 ```text
-backend/
+SitemapGenerator/
 │
-├── crawler.js         # Core BFS engine and HTML parser
-├── sitemap.js         # XML compilation and formatting
-├── robots.js          # robots.txt fetcher and validator
-└── utils.js           # Shared utilities and helpers
+├── frontend/
+│   ├── index.html
+│   ├── app.js
+│   ├── dashboard.js
+│   ├── style.css
+│
+├── backend/
+│   ├── crawler.js
+│   ├── sitemap.js
+│   ├── progress.js
+│
+├── output/
+│   ├── links.json
+│   ├── sitemap.xml
+│   ├── progress.json
+│
+├── .github/
+│   └── workflows/
+│       └── crawler.yml
+│
+└── package.json
 ```
 For a detailed breakdown of the architecture and scaling constraints, please check the [Project Wiki](https://github.com/bayzed123/SitemapGenerator/wiki).
 
